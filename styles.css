@@ -1,0 +1,161 @@
+/* Base styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif; /* Use Roboto font */
+    background-color: #121212; /* Default background color for dark theme */
+    color: #ffffff; /* Default text color for dark theme */
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+}
+
+.header-img {
+    width: 256px; /* Set width to 256px */
+    height: 256px; /* Set height to 256px */
+    object-fit: cover; /* Maintain aspect ratio */
+}
+
+.description {
+    margin: 20px 0;
+    color: #BBBBBB; /* Lighter color for description text */
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+/* Dark Theme Button Colors */
+.give-btn {
+    background-color: #03dac5; /* Secondary color for give button */
+    color: white;
+}
+
+.receive-btn {
+    background-color: #BB86FB; /* Third color for receive button */
+    color: white;
+}
+
+/* Button hover effects */
+.btn:hover {
+    opacity: 0.9; /* Slightly transparent on hover */
+}
+
+/* New Button Styling */
+.view-list-btn {
+    background-color: #FFBB33; /* New color for the 'View List' button */
+    color: white;
+}
+
+/* Button hover effect */
+.view-list-btn:hover {
+    opacity: 0.9; /* Slightly transparent on hover */
+}
+
+
+/* Theme Toggle */
+.theme-toggle {
+    margin-top: 20px;
+}
+
+.toggle-btn {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 25px; /* Rounded corners */
+}
+
+/* Light Theme */
+body.light-theme {
+    background-color: #FFFFFF; /* Light background color */
+    color: #121212; /* Dark text color */
+}
+
+body.light-theme .description {
+    color: #333333; /* Darker text for better readability */
+}
+
+body.light-theme .header-img {
+    filter: brightness(1); /* Original brightness for light theme */
+}
+
+body.light-theme .btn {
+    color: #121212; /* Dark text for buttons */
+}
+
+body.light-theme .give-btn {
+    background-color: #03dac5; /* Secondary color for give button */
+}
+
+body.light-theme .receive-btn {
+    background-color: #BB86FB; /* Third color for receive button */
+}
+
+/* Light Theme Button Hover Effects */
+body.light-theme .btn:hover {
+    opacity: 0.9; /* Slightly transparent on hover */
+}
+
+/* Theme Toggle Button */
+body.light-theme .toggle-btn {
+    background-color: #f0f0f0; /* Light background for the toggle button */
+    color: #121212; /* Dark text color */
+    border-radius: 25px; /* Rounded corners */
+}
+
+body.light-theme .toggle-btn:hover {
+    background-color: #d0d0d0; /* Slightly darker on hover */
+}
+
+/* Dark Theme Modifications */
+body.dark-theme {
+    background-color: #121212; /* Dark background color */
+    color: #ffffff; /* Light text color */
+}
+
+body.dark-theme .description {
+    color: #BBBBBB; /* Lighter color for description text */
+}
+
+body.dark-theme .header-img {
+    filter: brightness(0.8); /* Slightly darken the header image */
+}
+
+body.dark-theme .btn {
+    color: white; /* Text color for buttons */
+}
+
+body.dark-theme .give-btn {
+    background-color: #03dac5; /* Secondary color for give button */
+}
+
+body.dark-theme .receive-btn {
+    background-color: #BB86FB; /* Third color for receive button */
+}
+
+body.dark-theme .btn:hover {
+    opacity: 0.9; /* Slightly transparent on hover */
+}
+
+/* Theme Toggle Button */
+body.dark-theme .toggle-btn {
+    background-color: #444; /* Darker background for the toggle button */
+    color: #ffffff; /* Light text color */
+    border-radius: 25px; /* Rounded corners */
+}
+
+body.dark-theme .toggle-btn:hover {
+    background-color: #666; /* Lighter on hover */
+}
