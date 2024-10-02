@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Give and Receive</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"> <!-- Roboto Font -->
+    <script src="https://telegram.org/js/telegram-web-app.js?1"></script> <!-- Telegram SDK -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@0.4.0/dist/lottie-player.js"></script>
+</head>
+<body class="dark-theme"> <!-- Default to dark theme -->
+    <div class="container">
+        <!-- Image Header -->
+        <div class="header">
+            <!-- <img src="key.png" alt="Header Image" class="header-img"> -->
+            <!-- https://lottie.host/16bfb08e-8e24-4889-9290-f8d4325ba064/sAAUCzIknO.json -->
+            
+            <lottie-player src="https://lottie.host/55320e9f-a14e-4c93-b96e-0a8f912b0cf7/x3QT9kCNv2.json"
+                background="transparent"
+                speed="0.5"
+                autoplay></lottie-player>
+        </div>
+
+        <!-- Description Section -->
+        <div class="description">
+            <p data-lang="en">
+                
+                Introducing G&R: Empowering Families Through Payment Sharing 
+                <br><br> G&R is a revolutionary app designed to support families by 
+                giving back. For every payment received through the app, <b>70%</b> 
+                is automatically transferred to the parent or guardian of the payer. 
+                <br><br>With a seamless user experience and secure payment processing, 
+                G&R ensures that families stay connected and supported in the most 
+                meaningful way. <br><br>Empower your family, one payment at a time!",
+       
+            </p>
+            <p data-lang="es">
+
+                Presentamos G&R: empoderamiento de las familias mediante el uso compartido de los pagos
+                <br><br> G&R es una aplicación revolucionaria diseñada para apoyar a las familias mediante la
+                retribución. Por cada pago recibido a través de la aplicación, el <b>70 %</b>
+                se transfiere automáticamente al padre o tutor del pagador.
+                <br><br>Con una experiencia de usuario fluida y un procesamiento de pagos seguro,
+                G&R garantiza que las familias se mantengan conectadas y respaldadas de la manera más
+                significativa. <br><br>¡Empodera a tu familia, un pago a la vez!",
+                
+                </p>
+        </div>
+
+        <!-- Buttons Section -->
+        <div class="buttons">
+            <button data-lang="en" class="btn give-btn" id="give-button">Give</button>
+            <button data-lang="en" class="btn receive-btn" id="receive-button">Receive</button>
+            <button data-lang="en" class="btn view-list-btn" id="view-list-button">View List</button> <!-- New Button -->
+
+            <button data-lang="es" class="btn give-btn" id="give-button">Dar</button>
+            <button data-lang="es" class="btn receive-btn" id="receive-button">Recibir</button>
+            <button data-lang="es" class="btn view-list-btn" id="view-list-button">Ver Lista</button> <!-- New Button -->
+        </div>
+        
+
+        <!-- Theme Toggle -->
+        <div class="theme-toggle">
+            <button class="toggle-btn" id="toggle-theme">Switch Theme</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

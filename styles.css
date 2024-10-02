@@ -23,19 +23,52 @@ body {
     color: #BBBBBB; /* Lighter color for description text */
 }
 
+/* Make all buttons the same size */
 .buttons {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
+/* Base button styling */
 .btn {
     padding: 10px 20px;
     font-size: 16px;
     border: none;
     cursor: pointer;
-    border-radius: 25px; /* Rounded corners */
-    transition: background-color 0.3s; /* Smooth background transition */
+    border-radius: 25px;
+    transition: background-color 0.3s;
+    min-width: 150px; /* Ensures buttons have a consistent minimum width */
+    flex: 1; /* Ensures buttons take equal space */
+    text-align: center;
+}
+
+/* Media query for smaller screens (tablets, phones) */
+@media (max-width: 768px) {
+    .btn {
+        padding: 8px 15px; /* Reduce padding */
+        font-size: 14px; /* Adjust font size for smaller screens */
+        min-width: 120px; /* Smaller minimum width */
+    }
+    
+    .buttons {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 10px; /* Reduce gap between buttons */
+    }
+}
+
+/* Media query for very small screens (small phones) */
+@media (max-width: 480px) {
+    .btn {
+        padding: 6px 12px; /* Even smaller padding */
+        font-size: 12px; /* Reduce font size for small screens */
+        min-width: 100px; /* Smaller minimum width */
+    }
+    
+    .buttons {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 8px; /* Narrow gap between buttons */
+    }
 }
 
 /* Dark Theme Button Colors */
