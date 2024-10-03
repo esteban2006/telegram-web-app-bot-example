@@ -1,0 +1,186 @@
+body {
+    background-color: #121212;
+    font-family: 'Roboto', sans-serif;
+    color: #03dac5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+    padding: 20px; /* Padding for mobile view */
+}
+
+.container {
+    position: relative;
+    text-align: center;
+}
+
+.lottie-img {
+    width: 256px;
+    height: 256px;
+}
+
+.top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adds space between the Lottie and the SVG */
+    padding: 10px; /* Adds padding inside the container */
+    color: white;
+}
+
+#top-lottie {
+    width: 50px;
+    height: 50px;
+    z-index: 1; /* Ensures Lottie is on top */
+}
+
+.number-svg {
+    width: 50px;
+    height: 50px;
+    z-index: 1; /* Ensures the number is on top */
+}
+
+.number-svg text {
+    font-family: 'Roboto', sans-serif;
+    animation: stroke 6s; /*  stroke 20s infinite alternate */
+    stroke-width: 1;
+    stroke: #03DAC6;
+    font-size: 35px; /* Adjusted to fit the container */
+    text-transform: uppercase;
+    fill: transparent; /* Initially transparent for animation */
+}
+
+@keyframes stroke {
+    0% {
+        fill: #03DAC6;
+        stroke: #BB86FB;
+        stroke-dashoffset: 25%;
+        stroke-dasharray: 0 50%;
+        stroke-width: 1;
+    }
+    70% {
+        fill: #03DAC6;
+        stroke: #BB86FB;
+    }
+    80% {
+        fill: #03DAC6;
+        stroke: #BB86FB;
+        stroke-width: 3;
+    }
+    100% {
+        fill: #03DAC6;
+        stroke: #BB86FB;
+        stroke-dashoffset: -25%;
+        stroke-dasharray: 50% 0;
+        stroke-width: 0;
+    }
+}
+
+
+
+.span-33 {
+    color: white;
+    font-size: 24px;
+    margin-left: 10px;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.button {
+    background-color: #BB86FB;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    padding: 15px 30px;
+    margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 180px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #121212;
+    padding: 30px; /* Increased padding */
+    border-radius: 20px; /* Rounded corners for modal */
+    color: #03dac5;
+    max-width: 80%;
+    max-height: 80%; /* Limit modal size */
+    overflow: hidden; /* Hide overflow */
+}
+
+.modal-content.scrollable {
+    overflow-y: auto;
+    -ms-overflow-style: none;  /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none;  /* Hide scrollbar in Firefox */
+}
+
+.modal-content.scrollable::-webkit-scrollbar {
+    display: none;  /* Hide scrollbar in Chrome, Safari, and Opera */
+}
+
+.modal-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.close-btn {
+    background-color: #BB86FB;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+ul {
+    text-align: left;
+    padding-left: 0;
+}
+
+ul li {
+    list-style: none;
+    margin: 10px 0;
+    color: #03dac5;
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    color: #03dac5;
+    margin-bottom: 5px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #03dac5;
+    background-color: #121212;
+    color: white;
+}
+
+/* //////////////////////  */
