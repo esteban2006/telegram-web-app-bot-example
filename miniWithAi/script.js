@@ -3,7 +3,7 @@ const unsafeData = Telegram.WebApp.initDataUnsafe;
 // Load Lottie Animation
 const lottieContainer = document.getElementById('lottie-container');
 const lottiePlayer = document.createElement('lottie-player');
-lottiePlayer.setAttribute('src', 'https://assets5.lottiefiles.com/packages/lf20_V9t630.json'); // Replace with your Lottie URL
+lottiePlayer.setAttribute('src', 'https://lottie.host/0b68f99c-e89b-4977-90e1-45d407f15e06/Q9VbePb3AM.json'); // Replace with your Lottie URL
 lottiePlayer.setAttribute('background', 'transparent');
 lottiePlayer.setAttribute('speed', '1');
 lottiePlayer.setAttribute('loop', '');

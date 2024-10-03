@@ -1,5 +1,5 @@
 body {
-    background-color: #121212;
+    background-color: #312e2e;
     font-family: 'Roboto', sans-serif;
     color: #03dac5;
     display: flex;
@@ -14,11 +14,19 @@ body {
 .container {
     position: relative;
     text-align: center;
+    display: flex; /* Added to make the container a flexbox */
+    justify-content: center; /* Center contents horizontally */
+    align-items: center; /* Center contents vertically */
+    flex-direction: column; /* Stack items vertically */
+    height: 100%; /* Allow the container to take full height of the parent */
 }
 
 .lottie-img {
-    width: 256px;
-    height: 256px;
+    width: 256px; /* Keep your existing width */
+    height: 256px; /* Keep your existing height */
+    display: flex; /* Make it a flex container */
+    justify-content: center; /* Center Lottie player */
+    align-items: center; /* Center Lottie player */
 }
 
 .top-right {
