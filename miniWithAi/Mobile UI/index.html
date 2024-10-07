@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet</title>
+    <!-- telegram-web-app -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- google fonts  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+    <!-- style  -->
+     <link rel="stylesheet" href="./assets/css/style.css">
+
+</head>
+<body>
+
+    <!-- hero section  -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="navigation">
+                <div class="nav-left">
+                    <button class="menu-item menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"><path fill="currentColor" d="M11 7a4 4 0 1 0-8 0a4 4 0 0 0 8 0M9.5 7a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0M21 7a4 4 0 1 0-8 0a4 4 0 0 0 8 0m-1.5 0a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0M7 21a4 4 0 1 1 0-8a4 4 0 0 1 0 8m0-1.5a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5M21 17a4 4 0 1 0-8 0a4 4 0 0 0 8 0m-1.5 0a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0"/></svg>
+                    </button>
+                </div>
+                <div class="nav-right">
+                    <button class="menu-item search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11.5a7.5 7.5 0 1 1-15 0a7.5 7.5 0 0 1 15 0m-2.107 5.42l3.08 3.08"/></svg>
+                    </button>
+                    <button class="menu-item notification">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 50 50"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke="white" d="M31.25 37.5h-12.5a6.25 6.25 0 0 0 12.5 0"/><path stroke="white" d="M37.5 18.75v8.333l2.875 2.875A4.417 4.417 0 0 1 37.25 37.5h-24.5a4.416 4.416 0 0 1-3.125-7.542l2.875-2.875V18.75A12.5 12.5 0 0 1 25 6.25a12.5 12.5 0 0 1 6 1.52"/><path fill="#f31212" stroke="#f31212" d="M29.167 12.5a6.25 6.25 0 1 0 12.5 0a6.25 6.25 0 0 0-12.5 0"/></g></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="cash-wrapper">
+                <div class="outer-border">
+                    <div class="middle-border"></div>
+                    <div class="inner-border">
+                        <p>Total balance</p>
+                        <h4>$7000.00</h4>
+                        <span class="rate">+ 4.12%</span>
+                    </div>
+                </div>
+                <div class="action-btn-wrapper">
+                    <button>
+                        <div class="button-icon-outer">
+                            <span class="button-icon send-button-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80px" height="80px" viewBox="0 0 24 24" fill="none">
+                                    <path d="M11 21H12C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3H11M11 16L15 12M15 12L11 8M15 12H3" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <span class="btn-txt">Send</span>
+                    </button>
+                    <button>
+                        <div class="button-icon-outer">
+                            <span class="button-icon receive-button-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80px" height="80px" viewBox="0 0 24 24" fill="none">
+                                    <path d="M11 21H12C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3H11M11 16L15 12M15 12L11 8M15 12H3" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>                                                           
+                            </span>
+                        </div>
+                        <span class="btn-txt">Request</span>
+                    </button>
+                    <button>
+                        <div class="button-icon-outer">
+                            <span class="button-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80px" height="80px" viewBox="0 0 24 24" fill="none">
+                                    <path d="M6 8H10" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M20.8333 9H18.2308C16.4465 9 15 10.3431 15 12C15 13.6569 16.4465 15 18.2308 15H20.8333C20.9167 15 20.9583 15 20.9935 14.9979C21.5328 14.965 21.9623 14.5662 21.9977 14.0654C22 14.0327 22 13.994 22 13.9167V10.0833C22 10.006 22 9.96726 21.9977 9.9346C21.9623 9.43384 21.5328 9.03496 20.9935 9.00214C20.9583 9 20.9167 9 20.8333 9Z" stroke="#ffffff" stroke-width="1.5"/>
+                                    <path d="M20.965 9C20.8873 7.1277 20.6366 5.97975 19.8284 5.17157C18.6569 4 16.7712 4 13 4L10 4C6.22876 4 4.34315 4 3.17157 5.17157C2 6.34315 2 8.22876 2 12C2 15.7712 2 17.6569 3.17157 18.8284C4.34315 20 6.22876 20 10 20H13C16.7712 20 18.6569 20 19.8284 18.8284C20.6366 18.0203 20.8873 16.8723 20.965 15" stroke="#ffffff" stroke-width="1.5"/>
+                                    <path d="M17.9912 12H18.0002" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>                                                           
+                            </span>
+                        </div>
+                        <span class="btn-txt">Bills</span>
+                    </button>
+                    <button>
+                        <div class="button-icon-outer">
+                            <span class="button-icon active">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2m8-16h2a2 2 0 0 1 2 2v2m-4 12h2a2 2 0 0 0 2-2v-2M7 12h10"/></svg>                            
+                            </span>
+                        </div>
+                        <span class="btn-txt">Scan</span>
+                    </button>
+                </div>
+            </div>
+            <div class="transactions-section">
+                <div class="title-wrapper">
+                    <h2>Recent Transactions</h2>
+                    <button class="see-all-btn">See All</button>
+                </div>
+                <div class="transaction-card-wrapper">
+                    <div class="transaction-card">
+                        <div class="transaction-card-left">
+                            <div class="logo">
+                                <img src="./assets/img/netflix.png" alt="">
+                            </div>
+                            <div class="title">Netflix<br> <span class="time">2 hours ago</span></div>
+                        </div>
+                        <div class="transaction-card-right">
+                            <div class="transaction-amount">
+                                <p>$80.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="transaction-card active">
+                        <div class="transaction-card-left">
+                            <div class="logo">
+                                <img src="./assets/img/amazon-white.png" alt="">
+                            </div>
+                            <div class="title">Amazon<br> <span class="time">3 hours ago</span></div>
+                        </div>
+                        <div class="transaction-card-right">
+                            <div class="transaction-amount">
+                                <p>$150.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="transaction-card">
+                        <div class="transaction-card-left">
+                            <div class="logo">
+                                <img src="./assets/img/spotify.png" alt="">
+                            </div>
+                            <div class="title">Netflix<br> <span class="time">1 day ago</span></div>
+                        </div>
+                        <div class="transaction-card-right">
+                            <div class="transaction-amount">
+                                <p>$60.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="transaction-card">
+                        <div class="transaction-card-left">
+                            <div class="logo">
+                                <img src="./assets/img/yt-music.png" alt="">
+                            </div>
+                            <div class="title">You Tube Music<br> <span class="time">1 day ago</span></div>
+                        </div>
+                        <div class="transaction-card-right">
+                            <div class="transaction-amount">
+                                <p>$60.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const transactionCards = document.querySelectorAll(".transaction-card");
+
+        transactionCards.forEach(card => {
+        card.addEventListener("click", function() {
+            // Remove 'active' class from all cards
+            transactionCards.forEach(c => c.classList.remove("active"));
+
+            // Add 'active' class to the clicked card
+            this.classList.add("active");
+        });
+        });
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Banking App</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: #181818;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 375px; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+        }
+
+        .ring {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background-color: #242424;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .ring .progress-circle {
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            background-color: #242424;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 12px solid #2c81ff;
+            border-bottom-color: #242424; 
+        }
+
+        .balance {
+            text-align: center;
+            margin-top: 100px; /* Adjust for ring position */
+        }
+
+        .balance h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .balance .amount {
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .balance .percentage {
+            font-size: 12px;
+            color: #00ff00;
+            margin-top: 5px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .actions button {
+            background-color: #242424;
+            border: none;
+            border-radius: 50%;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+        }
+
+        .actions button:hover {
+            background-color: #303030;
+        }
+
+        .actions button:nth-child(1) {
+            background-image: url("https://img.icons8.com/ios-filled/50/000000/send.png");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .actions button:nth-child(2) {
+            background-image: url("https://img.icons8.com/ios-filled/50/000000/refresh.png");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .actions button:nth-child(3) {
+            background-image: url("https://img.icons8.com/ios-filled/50/000000/credit-card.png");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .actions button:nth-child(4) {
+            background-image: url("https://img.icons8.com/ios-filled/50/000000/qr-code.png");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .transactions {
+            margin-bottom: 20px;
+        }
+
+        .transactions h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .transaction {
+            background-color: #242424;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .transaction .icon {
+            display: flex;
+            align-items: center;
+        }
+
+        .transaction .icon img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .transaction .details {
+            flex: 1;
+        }
+
+        .transaction .details h4 {
+            margin-bottom: 5px;
+        }
+
+        .transaction .amount {
+            font-weight: bold;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 375px) {
+            .container {
+                max-width: 95%; 
+            }
+
+            .ring {
+                width: 180px;
+                height: 180px;
+            }
+
+            .ring .progress-circle {
+                width: 160px;
+                height: 160px;
+            }
+
+            .balance .amount {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="ring">
+            <div class="progress-circle"></div> 
+        </div>
+
+        <div class="balance">
+            <h2>Total balance</h2>
+            <div class="amount">$7000.00</div>
+            <div class="percentage">+4.12%</div>
+        </div>
+
+        <div class="actions">
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+        </div>
+
+        <div class="transactions">
+            <h3>Recent Transactions</h3>
+            <div class="transaction">
+                <div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Netflix_logo.svg/1200px-Netflix_logo.svg.png" alt="Netflix Logo"></div>
+                <div class="details">
+                    <h4>Netflix</h4>
+                    <p>2 hours ago</p>
+                </div>
+                <div class="amount">$80.00</div>
+            </div>
+            <div class="transaction">
+                <div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1200px-Amazon_logo.svg.png" alt="Amazon Logo"></div>
+                <div class="details">
+                    <h4>Amazon</h4>
+                    <p>3 hours ago</p>
+                </div>
+                <div class="amount">$150.00</div>
+            </div>
+            <div class="transaction">
+                <div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Spotify_logo_without_text.svg/1200px-Spotify_logo_without_text.svg.png" alt="Spotify Logo"></div>
+                <div class="details">
+                    <h4>Spotify</h4>
+                    <p>1 day ago</p>
+                </div>
+                <div class="amount">$60.00</div>
+            </div>
+            <div class="transaction">
+                <div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/YouTube_Music_icon_%282018%29.svg/1200px-YouTube_Music_icon_%282018%29.svg.png" alt="YouTube Music Logo"></div>
+                <div class="details">
+                    <h4>YouTube Music</h4>
+                    <p>1 day ago</p>
+                </div>
+                <div class="amount">$60.00</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

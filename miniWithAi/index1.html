@@ -13,13 +13,19 @@
         <div id="lottie-container" class="lottie-img"></div>
         <p id="language-text"></p>
         <div class="buttons">
-            <button class="button" id="give-btn"><i class="bi bi-arrow-up"></i></button>
-            <button class="button" id="receive-btn"><i class="bi bi-arrow-down"></i></button>
-            <button class="button" id="view-list-btn"><i class="bi bi-person-plus-fill"></i></button>
-            <button class="button" id="withdraw-btn"><i class="bi bi-wallet"></i></button>
-            <button class="button" id="share-btn"><i class="bi bi-share-fill"></i></button>
-            <button class="button" id="buy-btn"><i class="bi bi-credit-card-2-back-fill"></i></button>
+            <div id="initial-buttons">
+                <button class="button" id="give-btn"><i class="bi bi-arrow-up"></i></button>
+                <button class="button" id="receive-btn"><i class="bi bi-arrow-down"></i></button>
+                <button class="button" id="more-btn"><i class="bi bi-plus-lg"></i></button>
+            </div>
+            <div id="extra-buttons" style="display: none;">
+                <button class="button" id="view-list-btn"><i class="bi bi-person-plus-fill"></i></button>
+                <button class="button" id="withdraw-btn"><i class="bi bi-wallet"></i></button>
+                <button class="button" id="share-btn"><i class="bi bi-share-fill"></i></button>
+                <button class="button" id="buy-btn"><i class="bi bi-credit-card-2-back-fill"></i></button>
+            </div>
         </div>
+        
 
         <div class="top-right">
             <lottie-player id="top-lottie" 
@@ -85,7 +91,6 @@
             <div class="modal-buttons">
                 <button class="button" id="process-withdraw-btn">Process</button>
                 <button class="button" id="cancel-withdraw-btn">Cancel</button>
-                <button class="close-btn" id="close-withdraw-btn">Close</button>
             </div>
         </div>
     </div>

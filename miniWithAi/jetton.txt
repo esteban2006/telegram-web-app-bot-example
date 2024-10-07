@@ -1,0 +1,12 @@
+
+
+token jetton
+EQA7WOquBN-vhKHwra7xGmy8KlBuLtkiwkANvHh58wAIbz_a
+
+
+contract address
+EQA1VZS2iulMTrcd_3bTrjwrex3w19Jlz8qMxlFPxb9WCyzU
+
+
+
+This coin is created to empower the Give And Receive community, where through a combined wallet where you can send and receive Fiat and also our GNR token through the TON network, by being a subscribed member you receive: 50% in Fiat, 10% cashback for your guests, 30% for funding our Token in Ston.fi, 10% for the maintenance of this project. The tokens are distributed every 4 months to the members of our community, for free and based on the amount of transactions they make during the 4 months, the more fiat withdrawals you have, the more tokens you receive in each distribution. When our token is listed on a major exchange, all active members will receive 0.5% for every 4 months of supporting our project.

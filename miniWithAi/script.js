@@ -10,12 +10,18 @@ lottiePlayer.setAttribute('loop', '');
 lottiePlayer.setAttribute('autoplay', '');
 lottieContainer.appendChild(lottiePlayer);
 
-// Display user's language and all user data
 const languageText = document.getElementById('language-text');
-const userInfo = Object.entries(unsafeData.user)
-    .map(([key, value]) => `${key}: ${value}`)
-    .join(', ');
-languageText.textContent = `User Info: ${userInfo}`;
+
+// Check if unsafeData and unsafeData.user exist
+if (unsafeData && unsafeData.user) {
+    const userInfo = Object.entries(unsafeData.user)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(', ');
+    languageText.textContent = `User Info: ${userInfo}`;
+} else {
+    // Handle case where unsafeData.user is null or undefined
+    languageText.textContent = 'User Info: Not available';
+}
 
 // Handle Give button (opens QR code reader)
 document.getElementById('give-btn').addEventListener('click', () => {
@@ -120,7 +126,68 @@ document.getElementById('cancel-withdraw-btn').addEventListener('click', () => {
     withdrawModal.style.display = 'none';
 });
 
-// Close Withdraw Modal
-document.getElementById('close-withdraw-btn').addEventListener('click', () => {
-    withdrawModal.style.display = 'none';
+
+
+// Infinite scroll for Withdraw Modal content
+const scrollableModal = document.querySelector('.modal-content.scrollable');
+
+// Simulate loading more content when user reaches the bottom
+scrollableModal.addEventListener('scroll', () => {
+    // Check if the user has scrolled to the bottom
+    if (scrollableModal.scrollTop + scrollableModal.clientHeight >= scrollableModal.scrollHeight) {
+        loadMoreContent(); // Load more content dynamically
+    }
 });
+
+// Function to simulate loading additional content
+function loadMoreContent() {
+    // Example: Add new form group to simulate loading new content
+    const newField = document.createElement('div');
+    newField.className = 'form-group';
+    newField.innerHTML = `
+        <label>Extra Field</label>
+        <input type="text" />
+    `;
+    
+    // Append the new field to the modal content
+    scrollableModal.appendChild(newField);
+}
+
+// Handle "More" button
+document.getElementById('more-btn').addEventListener('click', function() {
+    const extraButtons = document.getElementById('extra-buttons');
+    const moreButton = this;
+
+    if (extraButtons.style.display === 'none') {
+        extraButtons.style.display = 'flex'; // Show the extra buttons
+        moreButton.textContent = '-';  // Change "More..." to "Less..."
+    } else {
+        extraButtons.style.display = 'none'; // Hide the extra buttons
+        moreButton.textContent = '+';  // Change back to "More..."
+    }
+});
+
+
+  // ... your JavaScript code ...
+  const modalContent = document.querySelector('.modal-content');
+
+  // Add an empty element with height to trigger scrolling
+  const triggerScroll = document.createElement('div');
+  triggerScroll.style.height = '100px'; // Adjust height as needed
+  modalContent.appendChild(triggerScroll);
+
+
+  // Function to adjust modal content height
+function adjustModalContentHeight() {
+    const modalContent = document.querySelector('.modal-content');
+    const windowHeight = window.innerHeight; // Get the viewport height
+  
+    // Adjust the modal content's height to allow for the keyboard
+    modalContent.style.maxHeight = `${windowHeight - 50}px`; // Adjust the 50px value as needed
+  }
+  
+  // Event listener for when the keyboard shows or hides
+  window.addEventListener('resize', adjustModalContentHeight);
+  
+  // Call the function initially to set the initial height
+  adjustModalContentHeight();
