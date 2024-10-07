@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wallet</title>
-    <!-- telegram-web-app -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <!-- google fonts  -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,9 +21,16 @@
         <div class="container">
             <div class="navigation">
                 <div class="nav-left">
-                    <button class="menu-item menu">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"><path fill="currentColor" d="M11 7a4 4 0 1 0-8 0a4 4 0 0 0 8 0M9.5 7a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0M21 7a4 4 0 1 0-8 0a4 4 0 0 0 8 0m-1.5 0a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0M7 21a4 4 0 1 1 0-8a4 4 0 0 1 0 8m0-1.5a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5M21 17a4 4 0 1 0-8 0a4 4 0 0 0 8 0m-1.5 0a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0"/></svg>
+                    <button class="menu-item menu" id="menu-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M11 7a4 4 0 1 0-8 0a4 4 0 0 0 8 0M9.5 7a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0M21 7a4 4 0 1 0-8 0a4 4 0 0 0 8 0m-1.5 0a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0M7 21a4 4 0 1 1 0-8a4 4 0 0 1 0 8m0-1.5a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5M21 17a4 4 0 1 0-8 0a4 4 0 0 0 8 0m-1.5 0a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0"/>
+                        </svg>
                     </button>
+                    <ul class="submenu" id="submenu">
+                        <li><a href="#">Item 1</a></li>
+                        <li><a href="#">Item 2</a></li>
+                        <li><a href="#">Item 3</a></li>
+                    </ul>                    
                 </div>
                 <div class="nav-right">
                     <button class="menu-item search">
@@ -37,7 +42,17 @@
                 </div>
             </div>
             <div class="cash-wrapper">
+                <!-- <div class="outer-border">
+                    <div class="middle-border"></div>
+                    <div class="inner-border">
+                        <p>Total balance</p>
+                        <h4>$7000.00</h4>
+                        <span class="rate">+ 4.12%</span>
+                    </div>
+                </div> -->
                 <div class="outer-border">
+                    <div class="outer-border-left"></div>
+                    <div class="outer-border-right"></div>
                     <div class="middle-border"></div>
                     <div class="inner-border">
                         <p>Total balance</p>
@@ -152,20 +167,24 @@
         </div>
     </section>
 
+
     <script>
-        const transactionCards = document.querySelectorAll(".transaction-card");
-
-        transactionCards.forEach(card => {
-        card.addEventListener("click", function() {
-            // Remove 'active' class from all cards
-            transactionCards.forEach(c => c.classList.remove("active"));
-
-            // Add 'active' class to the clicked card
-            this.classList.add("active");
+        const menuBtn = document.getElementById('menu-btn');
+        const submenu = document.getElementById('submenu');
+    
+        menuBtn.addEventListener('click', function() {
+            // Toggle submenu visibility
+            submenu.classList.toggle('show');
         });
+    
+        // Optional: Close submenu if clicked outside
+        document.addEventListener('click', function(event) {
+            if (!menuBtn.contains(event.target) && !submenu.contains(event.target)) {
+                submenu.classList.remove('show');
+            }
         });
-
     </script>
+    
     
 </body>
 </html>
