@@ -4,9 +4,10 @@
     --color-two: #000;
     --color-three: #020912;
     --color-four: #081d38;
-    --color-five: #2478ed;
+    --color-five: #00a5ff;
     --color-six: #1c4ea1;
     --font-one: "Roboto", sans-serif;
+    --color-background : #121212;
 }
 
 
@@ -27,7 +28,7 @@ html {
 body {
     min-height: 100vh;
     font-family: var(--font-one);
-    background: linear-gradient(255deg, rgba(2,9,18,1) 0%, rgba(8,29,56,1) 80%);
+    background: linear-gradient(255deg, #121212 0%, #121212 80%)
 }
 
 
@@ -182,19 +183,19 @@ body {
 
 .outer-border-left {
     clip-path: inset(0 50% 0 0); /* This clips the right half, showing only the left */
-    background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(17, 50, 102, 1) 100%);
+    background: linear-gradient(180deg, #00a5ff 0%, #00a5ff 100%);
 }
 
 .outer-border-right {
     clip-path: inset(0 0 0 50%); /* This clips the left half, showing only the right */
-    background: linear-gradient(180deg, rgba(36, 120, 237, 1) 0%, rgba(28, 78, 161, 1) 100%);
+    background: linear-gradient(180deg, #00d8de 0%, #00d8de 100%);
 }
 
 .middle-border {
     width: 190px;
     height: 190px;
     border-radius: 50%;
-    background: linear-gradient(255deg, rgba(2,9,18,1) 0%, rgba(8,29,56,1) 80%);
+    background: linear-gradient(255deg, #51565d 0%, #51565d 80%);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -228,7 +229,7 @@ body {
 }
 .inner-border span.rate {
     color: var(--color-two);
-    background: #aff94c;
+    background: #03dac6;
     border-radius: 20px;
     padding: 3px 10px;
     font-size: 13px;
@@ -240,7 +241,7 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
-    bottom: 62px;
+    bottom: 33px;
     gap: 5px;
 }
 .action-btn-wrapper button {
@@ -266,6 +267,11 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.transaction-card.active .receive-button-icon svg path {
+    stroke: #00d8de;
+}
+
 .button-icon {
     width: 45px;
     height: 45px;
@@ -274,6 +280,7 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 .button-icon.active {
     background: var(--color-one);
 }
@@ -287,6 +294,7 @@ body {
     color: var(--color-one);
     padding-top: 10px;
     opacity: .7;
+    font-size: 16px;
 }
 
 .send-button-icon svg {
@@ -325,11 +333,14 @@ body {
 }
 
 .transaction-card-wrapper {
+    max-height: 500px; /* Adjust height based on your layout */
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding-top: 20px;
 }
+
 .transaction-card {
     display: flex;
     align-items: center;
@@ -341,6 +352,7 @@ body {
     border-radius: 10px;
     cursor: pointer;
 }
+
 .transaction-card:hover {
     opacity: .7;
     transition: all 0.3s;
@@ -395,3 +407,17 @@ body {
         height: 80px;
     }
 }
+
+
+
+/* send swal */
+.swal2-input {
+    border: 1px solid #03dac5; /* Your custom border color */
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px;
+    margin: 10px 0;
+    width: calc(100% - 22px); /* Adjust based on your design */
+    box-shadow: none; /* Remove default shadow */
+}
+
+/* Additional styling as needed */
