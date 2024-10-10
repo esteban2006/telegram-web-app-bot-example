@@ -11,7 +11,7 @@ EQA1VZS2iulMTrcd_3bTrjwrex3w19Jlz8qMxlFPxb9WCyzU
 
 This coin is created to empower the Give And Receive community, where through a combined wallet where you can send and receive Fiat and also our GNR token through the TON network, by being a subscribed member you receive: 50% in Fiat, 10% cashback for your guests, 30% for funding our Token in Ston.fi, 10% for the maintenance of this project. The tokens are distributed every 4 months to the members of our community, for free and based on the amount of transactions they make during the 4 months, the more fiat withdrawals you have, the more tokens you receive in each distribution. When our token is listed on a major exchange, all active members will receive 0.5% for every 4 months of supporting our project.
 
-
+Este servicio a sido creado para poder realizar envios de divisas, a bajo costo desde 0.01 ctvs de dolar, consistimos en generar una wallet mixta de FIAT y Crito en la cual puedes realizar depositos de ambas monedas  y luego puedes gastar con tarjetas de credito prepagadas y/o compartir tu saldo con tus amigos.
 
 
 Payment providers for G&R @GiveAndReceibeBot.
@@ -23,3 +23,12 @@ Payment providers for G&R @GiveAndReceibeBot.
 
 
 https://t.me/plutotap_bot?start=r1961037903
+
+
+send 
+https://lottie.host/1101fff1-d3f8-475d-9fa0-870be9a7b312/zHIQArc0QL.json
+https://lottie.host/9caea19d-796a-420a-8f3d-2f9bc8a0705f/cGU8f0fwXe.json
+
+
+receive
+https://lottie.host/b5078e3c-6710-4f3f-bb95-a27349db5d45/dRobORsp5O.json
