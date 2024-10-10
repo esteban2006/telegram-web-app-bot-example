@@ -126,33 +126,85 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-
 // send 
-// Add event listener for the send button
+
 document.getElementById("send").addEventListener("click", function() {
     console.log("send clicked");
 
-    // Get user's language code from initDataUnsafe
+    // Get user's language code
     const userLanguageCode = languageCode;
 
     // Define the text based on the user's language code
     const sendToLabel = userLanguageCode === "es" ? "Enviar a" : "Send to";
     const amountLabel = userLanguageCode === "es" ? "Cantidad" : "Amount";
 
-    // Show SweetAlert2 form
+    // Show SweetAlert2 form with a Scan button
     Swal.fire({
         title: userLanguageCode === "es" ? "Enviar" : "Send",
         html: `
             <label>${sendToLabel}:</label>
             <input type="text" id="recipient" class="swal2-input" placeholder="${sendToLabel}" />
             <label>${amountLabel}:</label>
-            <input type="number" id="amount" class="swal2-input" placeholder="${amountLabel}" />
+            <input type="number" id="amount" class="swal2-input" placeholder="${amountLabel}" inputmode="numeric" />
+            <button id="scanQr" class="swal2-confirm custom-scan-button" style="margin-top: 10px;">Scan QR</button>
         `,
         background: '#121212', // Set the background color
         confirmButtonText: userLanguageCode === "es" ? "Enviar" : "Send",
         cancelButtonText: userLanguageCode === "es" ? "Cancelar" : "Cancel",
         showCancelButton: true,
         focusConfirm: false,
+        didOpen: () => {
+            // Add click event listener to the Scan QR button inside the modal
+            const scanButton = document.getElementById('scanQr');
+            scanButton.addEventListener('click', function() {
+                console.log('Scan button clicked');
+
+                let text = readQr();
+                Swal.fire({
+                    title: "qr read 01 ",
+                    text: text ? text : "No data at 01",
+                    icon: "success"
+                  });
+                if (text) {
+                    const lowerText = text.toString().toLowerCase();
+
+
+                    Swal.fire({
+                        title: "qr read ",
+                        text: ('Scanned text:', lowerText),
+                        icon: "success"
+                      });
+
+
+                    if (lowerText.substring(0, 7) === 'http://' || lowerText.substring(0, 8) === 'https://') {
+                        // Handle link-type QR code (open a link)
+                        setTimeout(function() {
+                            Telegram.WebApp.openLink(text);
+                        }, 50);
+                        return true;
+                    } else if (lowerText.includes('?amountRequested=')) {
+                        // Handle custom format like 'recipient?amountRequested=amount'
+                        const [recipient, amountPart] = lowerText.split('?amountRequested=');
+                        const amount = amountPart || '';
+                        const rec = recipient || '';
+
+                        Swal.fire({
+                            title: "qr read ",
+                            text: `${rec} ${amount}`,
+                            icon: "success"
+                          });
+
+                        // Autofill the scanned data into the input fields
+                        document.getElementById('recipient').value = rec;
+                        document.getElementById('amount').value = amount;
+                    } else {
+                        Swal.showValidationMessage('Invalid QR code format');
+                    }
+                } else {
+                    Swal.showValidationMessage('No data scanned');
+                }
+            });
+        },
         preConfirm: () => {
             const recipient = document.getElementById('recipient').value;
             const amount = document.getElementById('amount').value;
@@ -168,7 +220,7 @@ document.getElementById("send").addEventListener("click", function() {
     }).then((result) => {
         if (result.isConfirmed) {
             console.log(`Sending to: ${result.value.recipient}, Amount: ${result.value.amount}`);
-            // Perform your sending logic here
+            // Perform sending logic here
         }
     });
 });
@@ -180,13 +232,60 @@ style.innerHTML = `
         background-color: #00d8de !important;
         color: white !important; /* Ensure text is visible */
     }
+    .custom-scan-button {
+        background-color: #e77723 !important;
+        color: white !important;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
 `;
 document.head.appendChild(style);
 
 
+document.getElementById("scan").addEventListener("click", function() {
+    readQr();
+})
 
 
-// send 
+function readQr(linksOnly) {
+
+    Telegram.WebApp.showScanQrPopup({
+        text: linksOnly ? 'with any link' : 'for test purposes'
+    }, function(text) {
+        if (linksOnly) {
+            const lowerText = text.toString().toLowerCase();
+            if (lowerText.substring(0, 7) === 'http://' ||
+                lowerText.substring(0, 8) === 'https://'
+            ) {
+                setTimeout(function() {
+                    Telegram.WebApp.openLink(text);
+                }, 50);
+
+                return true;
+            }
+        } else {
+            Swal.fire({
+                title: "qr read 00 ",
+                text: ('Scanned text at function :', text),
+                icon: "success"
+              });
+            return text;
+        }
+    });
+    
+}
+
+
+
+
+
+
+
+
+
+
+// request 
 document.getElementById("request").addEventListener("click", function() {
     console.log("request clicked"); // Debugging: Log when request is clicked
 
@@ -215,6 +314,7 @@ document.getElementById("request").addEventListener("click", function() {
         inputAttributes: {
             class: 'custom-input', // Custom class for styling
             style: 'text-align: center;', // Center align text
+            inputmode: 'numeric', // Ensure numeric keyboard is displayed
         },
         customClass: {
             confirmButton: 'swal2-confirm swal2-styled', // Custom class for confirm button
@@ -230,12 +330,14 @@ document.getElementById("request").addEventListener("click", function() {
         },
         customClass: {
             confirmButton: 'custom-confirm-button',
-            cancelButton: 'custom-cancel-button'
-        }
+            cancelButton: 'custom-cancel-button',
+            popup: 'custom-swal-popup',
+            input: 'custom-swal-input',
+        },
     }).then((result) => {
         if (result.isConfirmed) {
             const requestedAmount = result.value;
-            const userId = Telegram.WebApp.initDataUnsafe?.user?.id || 'dummy_user_id'; // Use dummy ID if not found
+            const userId = Telegram.WebApp.initDataUnsafe?.user?.id || 'dummy_user_id'; 
 
             // Create a QR code container
             const qrCodeContainer = document.createElement('canvas'); // Use a canvas for Qrious
@@ -248,7 +350,7 @@ document.getElementById("request").addEventListener("click", function() {
                 value: `${userId}?amountRequested=${requestedAmount}`,
                 size: 256,
                 background: '#121212',
-                foreground: '#00a5ff',
+                foreground: '#55a7d3',
                 level: 'H',
             });
 
@@ -265,8 +367,8 @@ document.getElementById("request").addEventListener("click", function() {
 
             // Display QR code in a SweetAlert2 modal
             Swal.fire({
-                title: userLang === 'es' ? 'Tu Código QR' : 'Your QR Code',
-                html: `<p>${userLang === 'es' ? 'Escanea este código QR para recibir tu solicitud de' : 'Scan this QR code to receive your request of'} <strong>${requestedAmount}</strong></p>`,
+                // title: userLang === 'es' ? 'Tu Código QR' : 'Your QR Code',
+                html: `<p>${userLang === 'es' ? 'Solicitud de' : 'Requesting'} <strong>$ ${requestedAmount}</strong></p>`,
                 background: '#121212',
                 confirmButtonText: userLang === 'es' ? 'Cerrar' : 'Close',
                 confirmButtonColor: '#00d8de', // Match color to send button
