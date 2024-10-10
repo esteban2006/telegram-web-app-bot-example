@@ -421,3 +421,28 @@ body {
 }
 
 /* Additional styling as needed */
+
+
+/* Center and style the SweetAlert2 popup */
+.custom-swal-popup {
+    width: 80%; /* Set a custom width for the entire modal if needed */
+}
+
+/* Style the input field inside SweetAlert2 */
+.custom-swal-input {
+    width: 50% !important; /* Set the input box width to 50% of the modal */
+    margin: 0 auto; /* Center the input box */
+    text-align: center; /* Center the text inside the input box */
+    padding: 10px; /* Add padding for better readability */
+    border-radius: 5px; /* Rounded corners for a nicer look */
+    font-size: 16px; /* Adjust font size */
+}
+
+/* Style confirm and cancel buttons */
+.custom-confirm-button {
+    background-color: #3688b4; /* Change the color of the confirm button */
+}
+
+.custom-cancel-button {
+    background-color: #ff0000; /* Change the color of the cancel button */
+}
