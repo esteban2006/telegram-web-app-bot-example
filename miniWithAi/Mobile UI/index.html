@@ -20,8 +20,76 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-qrcode/0.18.0/jquery.qrcode.min.js"></script>    
+
+    <!-- lotties  -->
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+
 </head>
 <body>
+
+
+
+    <div id="credit-card-modal" class="credit-card-modal">
+        <div id="credit-card-container" class="credit-card-container">
+            <span class="credit-card-close" onclick="closeCreditCardModal()">&times;</span> <!-- Close button -->
+            <h2>Purchase</h2>
+            <form class="credit-card-form">
+                <label data-lang="en" for="credit-card-holder-name">Cardholder Name:</label>
+                <label data-lang="es" for="credit-card-holder-name">Nombre en la tarjeta:</label>
+                <input type="text" id="credit-card-holder-name" name="credit-card-holder-name" required placeholder="">
+    
+                <label data-lang="en" for="credit-card-number">Card Number:</label>
+                <label data-lang="es" for="credit-card-number">Numero de tarjeta:</label>
+                <input type="text" id="credit-card-number" name="credit-card-number" required placeholder="1111 2222 3333 4444">
+    
+                <label data-lang="en" for="credit-card-expiry">Expiry Date</label>
+                <label data-lang="es" for="credit-card-expiry">Fecha de Expiracion</label>
+                <div class="credit-card-expiry-container">
+                    <select id="credit-card-expiry-month" name="credit-card-expiry-month" required>
+                        <option data-lang="en" value="" disabled selected>Month</option>
+                        <option data-lang="es" value="" disabled selected>Mes</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <select id="credit-card-expiry-year" name="credit-card-expiry-year" required>
+                        <option data-lang="en" value="" disabled selected>Year</option>
+                        <option data-lang="es" value="" disabled selected>Año</option>
+                        <!-- JavaScript will populate this -->
+                    </select>
+                </div>
+    
+                <label data-lang="en" for="credit-card-security-code">Security Code:</label>
+                <label data-lang="es" for="credit-card-security-code">Código de seguridad:</label>
+                <input type="text" id="credit-card-security-code" name="credit-card-security-code" required placeholder="123">
+    
+                <button data-lang="en" id="purchase-button" class="credit-card-button">Process</button>
+                <button data-lang="es" id="purchase-button" class="credit-card-button">Procesar</button>
+            </form>
+        </div>
+    </div>
+    
+    
+    
+    <!-- Lottie Modal -->
+    <div id="lottieModal" class="modal">
+        <div class="modal-content">
+        <span id="closeLottieModal" class="close-button">&times;</span>
+        <div id="lottie-container" style="width: 200px; height: 200px; margin: 0 auto;"></div>
+        </div>
+    </div>
+    
+
 
     <!-- hero section  -->
     <section class="hero-section">
@@ -34,10 +102,11 @@
                         </svg>
                     </button>
                     <ul class="submenu" id="submenu">
+                        
+                        <li><a data-lang="en" href="#">Increase  your transfer limits</a></li>
+                        <li><a data-lang="es" href="#">Incrementa tus limites de transferencias</a></li>
                         <li><a data-lang="en" href="#">Share</a></li>
                         <li><a data-lang="es" href="#">Comparte</a></li>
-                        <li><a href="#">Item 2</a></li>
-                        <li><a href="#">Item 3</a></li>
                     </ul>                    
                 </div>
                 <div class="nav-right">

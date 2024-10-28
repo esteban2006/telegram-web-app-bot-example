@@ -25,6 +25,14 @@ Payment providers for G&R @GiveAndReceibeBot.
 https://t.me/plutotap_bot?start=r1961037903
 
 
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+<dotlottie-player src="https://lottie.host/1101fff1-d3f8-475d-9fa0-870be9a7b312/zHIQArc0QL.json" 
+background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
+
+
+
+
 send 
 https://lottie.host/1101fff1-d3f8-475d-9fa0-870be9a7b312/zHIQArc0QL.json
 https://lottie.host/9caea19d-796a-420a-8f3d-2f9bc8a0705f/cGU8f0fwXe.json
@@ -32,3 +40,29 @@ https://lottie.host/9caea19d-796a-420a-8f3d-2f9bc8a0705f/cGU8f0fwXe.json
 
 receive
 https://lottie.host/b5078e3c-6710-4f3f-bb95-a27349db5d45/dRobORsp5O.json
+
+
+api write
+standard_f5990b32a89b781a35b9ba54217516935c4cfa6fc21347ee90285ed9ebb25d0ff9edfb9824d099b1eadc02a08d3add2168563c4188bb44bf899e118817a11af1ce163fa1f142f27050c7ea19204a947416f85551db13f83f0ed9875fb7d55ffe68b65f3fada61a469ac6453b50dbf40f914a247a5bcabdead46a296ae090e861
+
+
+
+base de datos 
+user 
+    by = referred by 
+
+user_relation_balance 
+    [0,0] // balance, pending 
+
+user_relation = 670943c30026ac940b6b 
+    data telegram id (string) * 3 -> 1961037903 = 196103790319610379031961037903
+
+
+user_relation_transactions
+    date = millis  (also the id )
+    type = send, request,  topup, withdrawals
+    status = completed, pending, low balance // pending: card transaction only be available after bank confirmation
+    transaction_body = {} // if cc topup the transaction from the bank will also be added 
+    sender_id = telegram id of the sender 
+    message
+    transaction_id = date-sender for transaction // date-buyer for topup

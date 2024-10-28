@@ -440,9 +440,188 @@ body {
 
 /* Style confirm and cancel buttons */
 .custom-confirm-button {
-    background-color: #3688b4; /* Change the color of the confirm button */
+    background-color: #3688b4; 
+    color: #121212;
 }
 
 .custom-cancel-button {
-    background-color: #ff0000; /* Change the color of the cancel button */
+    background-color: #ff0000; 
+    color: #121212;
+}
+
+
+
+/* lottie modal  */
+/* The Modal (background) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #121212;
+    margin: auto;
+    padding: 20px;
+    border: none;
+    width: 300px;
+    text-align: center;
+    border-radius: 8px;
+    position: relative;
+  }
+  
+  /* Close Button */
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  #lottieModal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Dim background */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background-color: #121212;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  #lottie-container {
+    width: 100%; /* Make it responsive */
+    max-width: 300px; /* Limit the size */
+    height: 300px; /* Set height */
+    margin: 0 auto;
+  }
+  
+
+  /* credit card  */
+  
+
+  /* Modal background */
+.credit-card-modal {
+    display: none; /* Initially hidden */
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+}
+
+/* Centered container */
+.credit-card-container {
+    background-color: #1c1c1c; /* Dark background */
+    color: white; /* Text color */
+    width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center horizontally and vertically */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5); /* Shadow effect */
+}
+
+/* Title */
+.credit-card-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Form styles */
+.credit-card-form {
+    /* display: flex; */
+    flex-direction: column;
+}
+
+/* Labels */
+.credit-card-form label {
+    margin: 10px 0 5px;
+}
+
+/* Input fields */
+.credit-card-form input,
+.credit-card-form select {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333; 
+    color: white; 
+    margin-bottom: 15px;
+    width: -webkit-fill-available;
+    font-size: 16px;
+}
+
+/* Expiry date container */
+.credit-card-expiry-container {
+    display: flex; /* Aligns month and year dropdowns horizontally */
+    justify-content: space-between; /* Distributes space between dropdowns */
+    width: 100%; /* Ensures the container takes full width */
+}
+
+/* Expiry date dropdowns */
+.credit-card-expiry-container select {
+    flex: 1; /* Makes dropdowns take equal width */
+    margin-right: 10px; /* Adds space between dropdowns */
+}
+
+.credit-card-expiry-container select:last-child {
+    margin-right: 0; /* Removes margin from the last dropdown */
+}
+
+/* Submit button */
+.credit-card-form button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #03dac5, #03dac5); /* Gradient button */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+}
+
+.credit-card-form button:hover {
+    opacity: 0.9; /* Slight hover effect */
+}
+
+/* Close button */
+.credit-card-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.credit-card-close:hover,
+.credit-card-close:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
 }

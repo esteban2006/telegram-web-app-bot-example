@@ -49,54 +49,85 @@ document.addEventListener('DOMContentLoaded', () => {
     setupClickListeners();
 });
 
-
+let updateId = `update id 45`;
 let user;  // Declare the user variable
 
+// Function to log and display initData and initDataUnsafe data
 // Function to log and display initData and initDataUnsafe data
 function logInitDataUnsafe() {
     console.log("Telegram WebApp is ready.");
 
-    // Check if the Telegram WebApp object is available
     if (Telegram.WebApp) {
         console.log("Telegram WebApp object is available:", Telegram.WebApp);
 
-        // Log the initData object
-        if (Telegram.WebApp.initData) {
-            console.log("initData object:", Telegram.WebApp.initData);
-        } else {
-            console.error("initData is not available within Telegram.WebApp.");
-        }
+        // Access initData and initDataUnsafe
+        const initData = Telegram.WebApp.initData;  
+        const initDataUnsafe = Telegram.WebApp.initDataUnsafe;
 
-        // Log the initDataUnsafe object and extract user data
-        if (Telegram.WebApp.initDataUnsafe) {
-            console.log("initDataUnsafe object:", Telegram.WebApp.initDataUnsafe);
+        console.log("initData:", initData);
+        console.log("initDataUnsafe:", initDataUnsafe);
 
-            // Check if the user exists in initDataUnsafe
-            if (Telegram.WebApp.initDataUnsafe.user) {
-                user = Telegram.WebApp.initDataUnsafe.user; // Assign user object
-                console.log("User data:", user);
+        // Extract and display user data if available
+        if (initDataUnsafe.user) {
+            const user = initDataUnsafe.user;  // Assign user object
+            console.log("User data:", user);
 
-                // Extract first name and last name from initDataUnsafe
-                const firstName = user.first_name || "First name not available";
-                const lastName = user.last_name || "Last name not available";
+            const firstName = user.first_name || "First name not available";
+            const lastName = user.last_name || "Last name not available";
 
-                // Display the first and last name in the HTML element with id 'user-data'
-                const userDataElement = document.getElementById("user-data");
-                if (userDataElement) {
-                    userDataElement.textContent = `${firstName} ${lastName}`;
-                } else {
-                    console.error("Element with id 'user-data' not found.");
-                }
+            // Display user info or other relevant data
+            const devId = document.getElementById("balance");
+            if (devId) {
+                devId.textContent = `${firstName} ${lastName}`;
             } else {
-                console.error("User data is not available in initDataUnsafe.");
+                console.error("Element with id 'balance' not found.");
             }
         } else {
-            console.error("initDataUnsafe is not available within Telegram.WebApp.");
+            console.error("User data is not available in initDataUnsafe.");
         }
+
+        // Send initData to the backend for validation
+        fetch('/validate-telegram-data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ initData: initData }),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.valid) {
+                console.log("Data validated successfully:", data);
+                // Continue with app logic if valid
+            } else {
+                console.error("Validation failed:", data.error);
+                alert("Invalid or expired Telegram data.");
+            }
+        })
+        .catch((error) => {
+            console.error("Validation error:", error);
+            alert("Error validating Telegram data.");
+        });
+
     } else {
         console.error("Telegram WebApp object is not available.");
+
+        // Clear HTML and display message to open the app via Telegram
+        document.body.innerHTML = "";
+        const message = document.createElement("div");
+        message.textContent = "Please visit us via Telegram.";
+        message.style.cssText = `
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 24px;
+            color: #fff;
+            background-color: #121212;
+            text-align: center;
+        `;
+        document.body.appendChild(message);
     }
 }
+
 
 
 let languageCode;
@@ -127,16 +158,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 // send 
-
+let qrData = "";
 document.getElementById("send").addEventListener("click", function() {
-    console.log("send clicked");
+    loadSend();
+});
 
-    // Get user's language code
+function loadSend() {
     const userLanguageCode = languageCode;
 
     // Define the text based on the user's language code
     const sendToLabel = userLanguageCode === "es" ? "Enviar a" : "Send to";
     const amountLabel = userLanguageCode === "es" ? "Cantidad" : "Amount";
+    const messageLabel = userLanguageCode === "es" ? "Mensaje (opcional)" : "Message (optional)";
 
     // Show SweetAlert2 form with a Scan button
     Swal.fire({
@@ -146,9 +179,12 @@ document.getElementById("send").addEventListener("click", function() {
             <input type="text" id="recipient" class="swal2-input" placeholder="${sendToLabel}" />
             <label>${amountLabel}:</label>
             <input type="number" id="amount" class="swal2-input" placeholder="${amountLabel}" inputmode="numeric" />
+            <label>${messageLabel}:</label>
+            <input type="text" id="message" class="swal2-input" placeholder="${messageLabel}" value="GNR Transfer ..." />
             <button id="scanQr" class="swal2-confirm custom-scan-button" style="margin-top: 10px;">Scan QR</button>
         `,
         background: '#121212', // Set the background color
+        color: '#fff',
         confirmButtonText: userLanguageCode === "es" ? "Enviar" : "Send",
         cancelButtonText: userLanguageCode === "es" ? "Cancelar" : "Cancel",
         showCancelButton: true,
@@ -156,62 +192,41 @@ document.getElementById("send").addEventListener("click", function() {
         didOpen: () => {
             // Add click event listener to the Scan QR button inside the modal
             const scanButton = document.getElementById('scanQr');
-            scanButton.addEventListener('click', function() {
-                console.log('Scan button clicked');
+            scanButton.addEventListener('click', async function() {
+                // Close the current Swal and start QR scanning
+                Swal.close();
 
-                let text = readQr();
-                Swal.fire({
-                    title: "qr read 01 ",
-                    text: text ? text : "No data at 01",
-                    icon: "success"
-                  });
-                if (text) {
-                    const lowerText = text.toString().toLowerCase();
+                // Call the readQr function and wait for the result
+                await readQr(false, true);
 
+                // Reopen loadSend with updated input values from qrData
+                const lowerText = qrData.toString().toLowerCase();
+                const [recipient, amountPart] = lowerText.split('?amountrequested=');
+                const amount = amountPart || '';
+                const rec = recipient || '';
 
-                    Swal.fire({
-                        title: "qr read ",
-                        text: ('Scanned text:', lowerText),
-                        icon: "success"
-                      });
+                // Now, reopen the SweetAlert2 with the new values filled
+                loadSendWithValues(rec, amount, "a gift from ....");
+            });
 
-
-                    if (lowerText.substring(0, 7) === 'http://' || lowerText.substring(0, 8) === 'https://') {
-                        // Handle link-type QR code (open a link)
-                        setTimeout(function() {
-                            Telegram.WebApp.openLink(text);
-                        }, 50);
-                        return true;
-                    } else if (lowerText.includes('?amountRequested=')) {
-                        // Handle custom format like 'recipient?amountRequested=amount'
-                        const [recipient, amountPart] = lowerText.split('?amountRequested=');
-                        const amount = amountPart || '';
-                        const rec = recipient || '';
-
-                        Swal.fire({
-                            title: "qr read ",
-                            text: `${rec} ${amount}`,
-                            icon: "success"
-                          });
-
-                        // Autofill the scanned data into the input fields
-                        document.getElementById('recipient').value = rec;
-                        document.getElementById('amount').value = amount;
-                    } else {
-                        Swal.showValidationMessage('Invalid QR code format');
-                    }
-                } else {
-                    Swal.showValidationMessage('No data scanned');
-                }
+            // Focus on inputs and scroll to them when focused
+            const inputs = document.querySelectorAll('.swal2-input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    setTimeout(() => {
+                        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                });
             });
         },
         preConfirm: () => {
             const recipient = document.getElementById('recipient').value;
             const amount = document.getElementById('amount').value;
+            const message = document.getElementById('message').value || "a gift from ....";
             if (!recipient || !amount) {
                 Swal.showValidationMessage(`Please enter both fields`);
             }
-            return { recipient, amount };
+            return { recipient, amount, message };
         },
         customClass: {
             confirmButton: 'custom-confirm-button',
@@ -219,11 +234,161 @@ document.getElementById("send").addEventListener("click", function() {
         }
     }).then((result) => {
         if (result.isConfirmed) {
-            console.log(`Sending to: ${result.value.recipient}, Amount: ${result.value.amount}`);
-            // Perform sending logic here
+            // Close current alert
+            Swal.close();
+
+            // Perform sending logic here (optional)
+
+            // Open new SweetAlert with Lottie animation
+            showLottieAnimation();
         }
     });
-});
+}
+
+function loadSendWithValues(recipient, amount, defaultMessage) {
+    const userLanguageCode = languageCode;
+
+    const sendToLabel = userLanguageCode === "es" ? "Enviar a" : "Send to";
+    const amountLabel = userLanguageCode === "es" ? "Cantidad" : "Amount";
+    const messageLabel = userLanguageCode === "es" ? "Mensaje (opcional)" : "Message (optional)";
+
+    Swal.fire({
+        title: userLanguageCode === "es" ? "Enviar" : "Send",
+        html: `
+            <label>${sendToLabel}:</label>
+            <input type="text" id="recipient" class="swal2-input" placeholder="${sendToLabel}" value="${recipient}" />
+            <label>${amountLabel}:</label>
+            <input type="number" id="amount" class="swal2-input" placeholder="${amountLabel}" inputmode="numeric" value="${amount}" />
+            <label>${messageLabel}:</label>
+            <input type="text" id="message" class="swal2-input" placeholder="${messageLabel}" value="${defaultMessage}" />
+        `,
+        background: '#121212',
+        color: '#fff',
+        confirmButtonText: userLanguageCode === "es" ? "Enviar" : "Send",
+        cancelButtonText: userLanguageCode === "es" ? "Cancelar" : "Cancel",
+        showCancelButton: true,
+        focusConfirm: false,
+        didOpen: () => {
+            // Focus on inputs and scroll to them when focused
+            const inputs = document.querySelectorAll('.swal2-input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    setTimeout(() => {
+                        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                });
+            });
+        },
+        preConfirm: () => {
+            const recipient = document.getElementById('recipient').value;
+            const amount = document.getElementById('amount').value;
+            const message = document.getElementById('message').value;
+            if (!recipient || !amount) {
+                Swal.showValidationMessage(`Please enter both fields`);
+            }
+            return { recipient, amount, message };
+        },
+        customClass: {
+            confirmButton: 'custom-confirm-button',
+            cancelButton: 'custom-cancel-button'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Close current alert
+            Swal.close();
+
+            // Perform sending logic here (optional)
+
+            // Open new SweetAlert with Lottie animation
+            showLottieAnimation();
+        }
+    });
+}
+
+// Function to display the Lottie animation and automatically close after two loops
+function LottieAnimation() {
+    Swal.fire({
+        html: '<div id="lottie-container" style="width: 200px; height: 200px; margin: 0 auto;"></div>',
+        background: '#121212',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            const lottieContainer = document.getElementById('lottie-container');
+
+            // Ensure that the container exists and has been properly rendered
+            if (lottieContainer) {
+                // Load and play the Lottie animation
+                const animation = bodymovin.loadAnimation({
+                    container: lottieContainer,
+                    renderer: 'svg',
+                    loop: 2,  // Loop the animation twice
+                    autoplay: true,
+                    path: 'https://lottie.host/9caea19d-796a-420a-8f3d-2f9bc8a0705f/cGU8f0fwXe.json'
+                });
+
+                // Check if the animation has loaded properly
+                animation.addEventListener('DOMLoaded', function() {
+                    Telegram.WebApp.showAlert('Lottie animation loaded successfully.');
+                });
+
+                // Close the SweetAlert when the animation finishes (after 2 loops)
+                animation.addEventListener('complete', function() {
+                    Swal.close(); // Close the SweetAlert when the Lottie finishes
+                });
+            } else {
+                Telegram.WebApp.showAlert('Lottie container not found.');
+            }
+        }
+    });
+}
+// Function to open the Lottie modal
+function showLottieAnimation() {
+    const lottieModal = document.getElementById("lottieModal");
+    const closeModalButton = document.getElementById("closeLottieModal");
+    const lottieContainer = document.getElementById('lottie-container');
+
+    // Display the modal
+    lottieModal.style.display = "flex";
+
+    console.log("Modal opened!"); // Debug check if modal is shown
+
+    // Load and play the Lottie animation
+    const animation = bodymovin.loadAnimation({
+        container: lottieContainer,
+        renderer: 'svg',
+        loop: 0, // Set it to play once
+        autoplay: true,
+        path: 'https://lottie.host/1101fff1-d3f8-475d-9fa0-870be9a7b312/zHIQArc0QL.json'
+    });
+
+    console.log("Lottie animation triggered!"); // Debug check if animation is loaded
+
+    // Automatically close the modal when the animation finishes playing
+    animation.addEventListener('complete', function() {
+        closeLottieModal();
+    });
+
+    // Close the modal manually when the close button is clicked
+    closeModalButton.onclick = function() {
+        closeLottieModal();
+    };
+}
+
+
+// Function to close the modal
+function closeLottieModal() {
+    const lottieModal = document.getElementById("lottieModal");
+    lottieModal.style.display = "none";
+
+    // Clear the container to reset animation next time
+    document.getElementById('lottie-container').innerHTML = "";
+}
+
+// You can trigger the modal to open by calling openLottieModal() whenever needed
+
+// showLottieAnimation();
+
+
 
 // Add CSS for the custom buttons
 const style = document.createElement('style');
@@ -248,42 +413,43 @@ document.getElementById("scan").addEventListener("click", function() {
 })
 
 
-function readQr(linksOnly) {
+function readQr(linksOnly = false, relaunch = false) {
+    return new Promise((resolve, reject) => {
+        Telegram.WebApp.showScanQrPopup({
+            text: linksOnly ? 'with any link' : 'for test purposes'
+        }, function(text) {
+            // Close the QR scanner after scanning
+            Telegram.WebApp.closeScanQrPopup();
+            
+            if (linksOnly) {
+                const lowerText = text.toString().toLowerCase();
+                if (lowerText.substring(0, 7) === 'http://' ||
+                    lowerText.substring(0, 8) === 'https://'
+                ) {
+                    setTimeout(function() {
+                        Telegram.WebApp.openLink(text);
+                    }, 50);
 
-    Telegram.WebApp.showScanQrPopup({
-        text: linksOnly ? 'with any link' : 'for test purposes'
-    }, function(text) {
-        if (linksOnly) {
-            const lowerText = text.toString().toLowerCase();
-            if (lowerText.substring(0, 7) === 'http://' ||
-                lowerText.substring(0, 8) === 'https://'
-            ) {
-                setTimeout(function() {
-                    Telegram.WebApp.openLink(text);
-                }, 50);
-
-                return true;
+                    resolve(true); // Resolve the promise
+                }
+            } else {
+                Swal.fire({
+                    title: updateId,
+                    text: ('Scanned text at function:', text),
+                    icon: "success"
+                });
+                qrData = text;
+                resolve(qrData); // Resolve with the scanned text
             }
-        } else {
-            Swal.fire({
-                title: "qr read 00 ",
-                text: ('Scanned text at function :', text),
-                icon: "success"
-              });
-            return text;
+        });
+    }).then(() => {
+        if (qrData !== "" && relaunch) {
+            loadSend();
         }
+    }).catch((error) => {
+        console.error("Error scanning QR code:", error);
     });
-    
 }
-
-
-
-
-
-
-
-
-
 
 // request 
 document.getElementById("request").addEventListener("click", function() {
@@ -306,6 +472,7 @@ document.getElementById("request").addEventListener("click", function() {
         input: 'number',
         inputPlaceholder: inputPlaceholder,
         background: '#121212',
+        color:"#fff",
         confirmButtonText: confirmButtonText,
         cancelButtonText: cancelButtonText,
         showCancelButton: true,
@@ -382,5 +549,132 @@ document.getElementById("request").addEventListener("click", function() {
         }
     });
 });
+
+// credit card 
+document.getElementById("topUp").addEventListener("click", function() {
+    showCreditCardForm();
+})
+
+function showCreditCardForm() {
+    const creditCardModal = document.getElementById("credit-card-modal");
+    const creditCardContainer = document.querySelector(".credit-card-container");
+
+    // Display the modal
+    creditCardModal.style.display = "flex";
+    // Clear inner HTML of the credit-card-container
+    creditCardContainer.innerHTML = "";
+
+    // Add the close button back to the container
+    const closeButton = document.createElement('span');
+    closeButton.id = "close-credit-card-modal";
+    closeButton.className = "credit-card-close";
+    closeButton.innerHTML = "&times;";
+    closeButton.onclick = function() {closeCreditCardModal();};
+
+    // Append the close button to the container
+    creditCardContainer.appendChild(closeButton);
+
+    // Create the credit card form
+    const form = document.createElement('form');
+    form.id = "credit-card-form";
+    form.className = "credit-card-form";
+
+    // Form HTML structure
+    form.innerHTML = `
+        <label for="credit-card-holder">Cardholder Name</label><br>
+        <input type="text" id="credit-card-holder" name="credit-card-holder" required><br>
+
+        <label for="credit-card-number">Card Number</label><br>
+        <input type="text" id="credit-card-number" name="credit-card-number" maxlength="16" required placeholder="1111 2222 3333 4444" inputmode="numeric"><br>
+
+        <label for="credit-card-expiry">Expiry Date</label><br>
+        <select id="credit-card-expiry-month" name="credit-card-expiry-month" required inputmode="numeric">
+            <option value="" disabled selected>Month</option>
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+        <select id="credit-card-expiry-year" name="credit-card-expiry-year" required inputmode="numeric">
+            <option value="" disabled selected>Year</option>
+            <!-- JavaScript will populate this -->
+        </select><br>
+
+        <label for="credit-card-cvv">Security Code (CVV)</label><br>
+        <input type="text" id="credit-card-cvv" name="credit-card-cvv" maxlength="3" required placeholder="123" inputmode="numeric"><br>
+
+        <button type="submit">Process</button>
+
+    `;
+
+    // Append the form to the container
+    creditCardContainer.appendChild(form);
+
+    // Populate the year dropdown
+    populateYearDropdown();
+
+    // Handle form submission
+    form.onsubmit = function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Validate card details
+        const cardHolder = document.getElementById('credit-card-holder').value;
+        const cardNumber = document.getElementById('credit-card-number').value.replace(/\s/g, '');
+        const expiryMonth = document.getElementById('credit-card-expiry-month').value;
+        const expiryYear = document.getElementById('credit-card-expiry-year').value;
+        const cvv = document.getElementById('credit-card-cvv').value;
+
+        console.log("Form submitted with data:", {
+            cardHolder,
+            cardNumber,
+            expiryMonth,
+            expiryYear,
+            cvv,
+        });
+
+        closeCreditCardModal(); // Close the modal after submission
+    };
+}
+
+
+// Function to populate the year dropdown
+function populateYearDropdown() {
+    const yearDropdown = document.getElementById('credit-card-expiry-year');
+    const currentYear = new Date().getFullYear();
+
+    for (let i = 0; i <= 10; i++) {
+        const year = currentYear + i;
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearDropdown.appendChild(option);
+    }
+}
+
+// Updated expiry date validation function
+function validateExpiryDate(month, year) {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1; // Months are zero-indexed
+
+    return (year > currentYear) || (year == currentYear && month >= currentMonth);
+}
+
+// Rest of the JavaScript code remains the same...
+
+
+function closeCreditCardModal() {
+    const creditCardModal = document.getElementById("credit-card-modal");
+    creditCardModal.style.display = "none"; // Hide the modal
+    console.log("Credit Card Modal closed!"); // Debug check if modal is hidden
+}
 
 
