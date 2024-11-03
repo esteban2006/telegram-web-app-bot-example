@@ -72,12 +72,34 @@
                 <label data-lang="en" for="credit-card-security-code">Security Code:</label>
                 <label data-lang="es" for="credit-card-security-code">Código de seguridad:</label>
                 <input type="text" id="credit-card-security-code" name="credit-card-security-code" required placeholder="123">
-    
-                <button data-lang="en" id="purchase-button" class="credit-card-button">Process</button>
-                <button data-lang="es" id="purchase-button" class="credit-card-button">Procesar</button>
+
+                <!-- Country Dropdown -->
+                <label data-lang="en" for="country-dropdown" >Country</label>
+                <label data-lang="es" for="country-dropdown">País</label>
+                <select id="country-dropdown" name="country-dropdown" required onchange="updateStates()">
+                    <option value="" disabled selected>Select Country</option>
+                    <!-- Populate options dynamically -->
+                </select>
+
+                <!-- State Dropdown -->
+                <label data-lang="en" for="state-dropdown" >State</label>
+                <label data-lang="es" for="state-dropdown">Estado</label>
+                <select id="state-dropdown" name="state-dropdown" required>
+                    <option value="" disabled selected>Select State</option>
+                    <!-- Populate options dynamically based on country selection -->
+                </select>
+
+                <!-- Address Input -->
+                <label data-lang="en" for="address-input" >Address</label>
+                <label data-lang="es" for="address-input">Dirección</label>
+                <input type="text" id="address-input" name="address-input" required placeholder="Enter your address">
+
+                <button type="button" data-lang="en" id="purchase-button" class="credit-card-button">Process</button>
+                <button type="button" data-lang="es" id="purchase-button" class="credit-card-button">Procesar</button>
             </form>
         </div>
     </div>
+    
     
     
     
