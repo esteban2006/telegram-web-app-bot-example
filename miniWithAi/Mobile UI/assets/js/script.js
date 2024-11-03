@@ -3931,19 +3931,20 @@ let updateId = `update id 45`;
 let user;  // Declare the user variable
 
 // Function to log and display initData and initDataUnsafe data
-// Function to log and display initData and initDataUnsafe data
 function logInitDataUnsafe() {
     console.log("Telegram WebApp is ready.");
 
     if (Telegram.WebApp) {
         console.log("Telegram WebApp object is available:", Telegram.WebApp);
 
-        // Access initData and initDataUnsafe
+        // Access initData, initDataUnsafe, and safeData
         const initData = Telegram.WebApp.initData;  
         const initDataUnsafe = Telegram.WebApp.initDataUnsafe;
+        const safeData = Telegram.WebApp.safeData;  // Access safeData
 
         console.log("initData:", initData);
         console.log("initDataUnsafe:", initDataUnsafe);
+        console.log("safeData:", safeData);  // Log safeData
 
         // Extract and display user data if available
         if (initDataUnsafe.user) {
@@ -4005,6 +4006,7 @@ function logInitDataUnsafe() {
         document.body.appendChild(message);
     }
 }
+
 
 
 
