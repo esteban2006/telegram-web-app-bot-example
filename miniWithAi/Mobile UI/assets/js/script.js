@@ -4459,68 +4459,87 @@ function showCreditCardForm() {
 
     // Form HTML structure
     form.innerHTML = `
-        <label data-lang="en" for="credit-card-holder-name">Cardholder Name:</label>
-                <label data-lang="es" for="credit-card-holder-name">Nombre en la tarjeta:</label>
-                <input type="text" id="credit-card-holder-name" name="credit-card-holder-name" required placeholder="">
-    
-                <label data-lang="en" for="credit-card-number">Card Number:</label>
-                <label data-lang="es" for="credit-card-number">Numero de tarjeta:</label>
-                <input type="text" id="credit-card-number" name="credit-card-number" required placeholder="1111 2222 3333 4444">
-    
-                <label data-lang="en" for="credit-card-expiry">Expiry Date</label>
-                <label data-lang="es" for="credit-card-expiry">Fecha de Expiracion</label>
-                <div class="credit-card-expiry-container">
-                    <select id="credit-card-expiry-month" name="credit-card-expiry-month" required>
-                        <option data-lang="en" value="" disabled selected>Month</option>
-                        <option data-lang="es" value="" disabled selected>Mes</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                    </select>
-                    <select id="credit-card-expiry-year" name="credit-card-expiry-year" required>
-                        <option data-lang="en" value="" disabled selected>Year</option>
-                        <option data-lang="es" value="" disabled selected>Año</option>
-                        <!-- JavaScript will populate this -->
-                    </select>
-                </div>
-    
-                <label data-lang="en" for="credit-card-security-code">Security Code:</label>
-                <label data-lang="es" for="credit-card-security-code">Código de seguridad:</label>
-                <input type="text" id="credit-card-security-code" name="credit-card-security-code" required placeholder="123">
+<label data-lang="en" for="credit-card-holder-name">Cardholder Name:</label>
+    <label data-lang="es" for="credit-card-holder-name">Nombre en la tarjeta:</label>
+    <input type="text" id="credit-card-holder-name" name="credit-card-holder-name" required placeholder="">
 
-                <!-- Country Dropdown -->
-                <label data-lang="en" for="country-dropdown" >Country</label>
-                <label data-lang="es" for="country-dropdown">País</label>
-                <select id="country-dropdown" name="country-dropdown" required onchange="updateStates()">
-                    <option value="" disabled selected>Select Country</option>
-                    <!-- Populate options dynamically -->
-                </select>
+    <label data-lang="en" for="credit-card-number">Card Number:</label>
+    <label data-lang="es" for="credit-card-number">Número de tarjeta:</label>
+    <input 
+        type="text" 
+        id="credit-card-number" 
+        name="credit-card-number" 
+        required 
+        placeholder="1111 2222 3333 4444" 
+        maxlength="19" 
+        pattern="\d{16}" 
+        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 16).replace(/(.{4})/g, '$1 ');" 
+        title="Please enter a 16-digit card number."
+    >
+        
 
-                <!-- State Dropdown -->
-                <label data-lang="en" for="state-dropdown" >State</label>
-                <label data-lang="es" for="state-dropdown">Estado</label>
-                <select id="state-dropdown" name="state-dropdown" required>
-                    <option value="" disabled selected>Select State</option>
-                    <!-- Populate options dynamically based on country selection -->
-                </select>
+    <label data-lang="en" for="credit-card-expiry">Expiry Date</label>
+    <label data-lang="es" for="credit-card-expiry">Fecha de Expiracion</label>
+    <div class="credit-card-expiry-container">
+        <select id="credit-card-expiry-month" name="credit-card-expiry-month" required>
+            <option data-lang="en" value="" disabled selected>Month</option>
+            <option data-lang="es" value="" disabled selected>Mes</option>
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+        <select id="credit-card-expiry-year" name="credit-card-expiry-year" required>
+            <option data-lang="en" value="" disabled selected>Year</option>
+            <option data-lang="es" value="" disabled selected>Año</option>
+            <!-- JavaScript will populate this -->
+        </select>
+    </div>
 
-                <!-- Address Input -->
-                <label data-lang="en" for="address-input" >Address</label>
-                <label data-lang="es" for="address-input">Dirección</label>
-                <input type="text" id="address-input" name="address-input" required placeholder="Enter your address">
+    <label data-lang="en" for="credit-card-security-code">Security Code:</label>
+    <label data-lang="es" for="credit-card-security-code">Código de seguridad:</label>
+    <input 
+        type="number" 
+        id="credit-card-security-code" 
+        name="credit-card-security-code" 
+        required 
+        placeholder="123" 
+        min="0" 
+        max="999" 
+        maxlength="3" 
+        pattern="\d{3}" 
+        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3);" 
+        title="Please enter a 3-digit security code."
+    >
 
-                <button type="button" data-lang="en" id="purchase-button" class="credit-card-button">Process</button>
-                <button type="button" data-lang="es" id="purchase-button" class="credit-card-button">Procesar</button>
-            
+    <label data-lang="en" for="country-dropdown">Country</label>
+    <label data-lang="es" for="country-dropdown">País</label>
+    <select id="country-dropdown" name="country-dropdown" required onchange="updateStates()">
+        <option value="" disabled selected>Select Country</option>
+        <!-- Populate options dynamically -->
+    </select>
+
+    <label data-lang="en" for="state-dropdown">State</label>
+    <label data-lang="es" for="state-dropdown">Estado</label>
+    <select id="state-dropdown" name="state-dropdown" required>
+        <option value="" disabled selected>Select State</option>
+        <!-- Populate options dynamically based on country selection -->
+    </select>
+
+    <label data-lang="en" for="address-input">Address</label>
+    <label data-lang="es" for="address-input">Dirección</label>
+    <input type="text" id="address-input" name="address-input" required placeholder="Enter your address">
+
+    <button type="button" id="purchase-button" class="credit-card-button" onclick="handleSubmit()">Process</button>
+  
     `;
 
     // Append the form to the container
@@ -4618,18 +4637,41 @@ function updateStates() {
 }
 
 // Handle form submission
-function handleSubmit(event) {
-    event.preventDefault(); // Prevent form submission for testing
-
-    const selectedCountry = countryDropdown.value;
-    const selectedState = stateDropdown.value;
-
-    const selectedCountryName = countryDropdown.options[countryDropdown.selectedIndex].text;
-    const selectedStateName = stateDropdown.options[stateDropdown.selectedIndex].text;
+function handleSubmit() {
+    // Gather form data
+    const cardHolderName = document.getElementById('credit-card-holder-name').value;
+    const cardNumber = document.getElementById('credit-card-number').value;
+    const expiryMonth = document.getElementById('credit-card-expiry-month').value;
+    const expiryYear = document.getElementById('credit-card-expiry-year').value;
+    const securityCode = document.getElementById('credit-card-security-code').value;
+    const selectedCountry = document.getElementById('country-dropdown').value;
+    const selectedState = document.getElementById('state-dropdown').value;
     const address = document.getElementById('address-input').value;
 
+    // Get country name and territory name
+    const selectedCountryName = document.getElementById('country-dropdown').options[document.getElementById('country-dropdown').selectedIndex].text;
+    const selectedStateName = document.getElementById('state-dropdown').options[document.getElementById('state-dropdown').selectedIndex].text;
+
     // Log the selected data
+    console.log(`Cardholder Name: ${cardHolderName}`);
+    console.log(`Card Number: ${cardNumber}`);
+    console.log(`Expiry Date: ${expiryMonth}/${expiryYear}`);
+    console.log(`Security Code: ${securityCode}`);
     console.log(`Country ID: ${selectedCountry}, Country Name: ${selectedCountryName}`);
     console.log(`State ID: ${selectedState}, State Name: ${selectedStateName}`);
     console.log(`Address: ${address}`);
+
+    // Find the selected territory ID based on the selected country and state
+    const selectedTerritoryId = getSelectedTerritoryId(selectedCountry, selectedState);
+    console.log(`Selected Country ID: ${selectedCountry}`);
+    console.log(`Selected Territory ID: ${selectedTerritoryId}`);
+}
+
+function getSelectedTerritoryId(countryId, stateId) {
+    const country = countryData.find(c => c.id === countryId);
+    if (country) {
+        const territory = country.territorios.find(t => t.id === stateId);
+        return territory ? territory.id : null; // Return territory ID or null if not found
+    }
+    return null; // Return null if country not found
 }
