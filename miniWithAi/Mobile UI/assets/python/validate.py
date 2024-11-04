@@ -1,70 +1,70 @@
+import hashlib
 import hmac
-from hashlib import sha256
-import time
-
-# Replace with your bot's token
-BOT_TOKEN = "your-telegram-bot-token"
-
-
-def create_secret_key(token):
-    """Generate the secret key using HMAC-SHA-256."""
-    return hmac.new(b"WebAppData", token.encode(), sha256).digest()
+import json
+from dataclasses import dataclass
+from operator import itemgetter
+from typing import Any
+from urllib.parse import parse_qsl
 
 
-def validate_telegram_data(init_data):
-    """Validate the initData received from Telegram."""
-    # Split the query string into key-value pairs
-    params = dict([param.split("=", 1) for param in init_data.split("&")])
-    received_hash = params.pop("hash", None)  # Extract the 'hash' parameter
+@dataclass(eq=False)
+class AuthError(Exception):
+    status: int = 403
+    detail: str = "unknown auth error"
 
-    if not received_hash:
-        return False, "Hash not found in the data"
-
-    # Generate the data-check-string (sorted alphabetically)
-    data_check_string = "\n".join(f"{k}={v}" for k, v in sorted(params.items()))
-
-    # Generate the secret key using the bot token
-    secret_key = create_secret_key(BOT_TOKEN)
-
-    # Generate the HMAC-SHA-256 hash of the data-check-string
-    calculated_hash = hmac.new(
-        secret_key, data_check_string.encode(), sha256
-    ).hexdigest()
-
-    # Verify the received hash against the calculated hash
-    if not hmac.compare_digest(calculated_hash, received_hash):
-        return False, "Hash mismatch: Invalid data"
-
-    # Optional: Check if the auth_date is too old
-    auth_date = int(params.get("auth_date", 0))
-    current_time = int(time.time())
-
-    if current_time - auth_date > 86400:  # 86400 seconds = 1 day
-        return False, "Data is too old"
-
-    return True, "Data is valid"
+    @property
+    def message(self) -> str:
+        return f"Auth error occurred, detail: {self.detail}"
 
 
-# Example usage
-if __name__ == "__main__":
-    # Example initData string (replace with actual data for testing)
-    init_data = {
-        "query_id": "AAFPEON0AAAAAE8Q43RE1kU4",
-        "user": {
-            "id": 1961037903,
-            "first_name": "Esteban",
-            "last_name": "Jandres",
-            "username": "eggsteban_503",
-            "language_code": "en",
-            "allows_write_to_pm": True,
-        },
-        "auth_date": "1729950846",
-        "hash": "ef7843d765025dce36a955562fd3af8190ef99c5cbcbceea693e1e491e79cf05",
-    }
+class WebAppAuth:
+    def __init__(self, bot_token: str) -> None:
+        self._bot_token = bot_token
+        self._secret_key = self._get_secret_key()
 
-    is_valid, message = validate_telegram_data(init_data)
+    def get_user_id(self, init_data: str) -> int:
+        return int(json.loads(self._validate(init_data)["user"])["id"])
 
-    if is_valid:
-        print("Success:", message)
-    else:
-        print("Error:", message)
+    def _get_secret_key(self) -> bytes:
+        return hmac.new(
+            key=b"WebAppData", msg=self._bot_token.encode(), digestmod=hashlib.sha256
+        ).digest()
+
+    def _validate(self, init_data: str) -> dict[str, Any]:
+        try:
+            parsed_data = dict(parse_qsl(init_data, strict_parsing=True))
+        except ValueError as err:
+            raise AuthError(detail="invalid init data") from err
+        if "hash" not in parsed_data:
+            raise AuthError(detail="missing hash")
+        hash_ = parsed_data.pop("hash")
+        data_check_string = "\n".join(
+            f"{k}={v}" for k, v in sorted(parsed_data.items(), key=itemgetter(0))
+        )
+        calculated_hash = hmac.new(
+            key=self._secret_key,
+            msg=data_check_string.encode(),
+            digestmod=hashlib.sha256,
+        ).hexdigest()
+        if calculated_hash != hash_:
+            raise AuthError(detail="invalid hash")
+
+        else:
+            print(f"calculated {calculated_hash}\nhash {hash_}")
+        return parsed_data
+
+
+v = WebAppAuth("7738287101:AAE-mgrdPlfyoYXntQxqgFdE3mC3NLAwOTs")
+# Correctly formatted init_data for testing
+init_data = (
+    "query_id=AAFPEON0AAAAAE8Q43RNXS94&"
+    "user=%7B%22id%22%3A1961037903%2C%22first_name%22%3A%22Esteban%22%2C"
+    "%22last_name%22%3A%22Jandres%22%2C%22username%22%3A%22eggsteban_503%22%2C"
+    "%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&"
+    "auth_date=1730613767&"
+    "hash=aeb71c1b5b197410726796430f5df2fbc295954dd132f965f8135aa2a8357622"
+)
+
+print(v.get_user_id(init_data))
+print(v._secret_key)
+print(v._validate(init_data))

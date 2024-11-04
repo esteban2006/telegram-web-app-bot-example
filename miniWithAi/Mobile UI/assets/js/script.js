@@ -3930,83 +3930,61 @@ document.addEventListener('DOMContentLoaded', () => {
 let updateId = `update id 45`;
 let user;  // Declare the user variable
 
+
+
 // Function to log and display initData and initDataUnsafe data
 function logInitDataUnsafe() {
     console.log("Telegram WebApp is ready.");
 
+    // Check if the Telegram WebApp object is available
     if (Telegram.WebApp) {
         console.log("Telegram WebApp object is available:", Telegram.WebApp);
 
-        // Access initData, initDataUnsafe, and safeData
-        const initData = Telegram.WebApp.initData;  
-        const initDataUnsafe = Telegram.WebApp.initDataUnsafe;
-        const safeData = Telegram.WebApp.safeData;  // Access safeData
+         // Step 1: Retrieve initData
+        const initData = Telegram.WebApp.initData;
 
-        console.log("initData:", initData);
-        console.log("initDataUnsafe:", initDataUnsafe);
-        console.log("safeData:", safeData);  // Log safeData
+        // Step 2: Parse into an object and remove the 'hash' key
+        const params = new URLSearchParams(initData);
+        const sortedParams = Array.from(params.entries())
+            .filter(([key]) => key !== 'hash')
+            .sort(([a], [b]) => a.localeCompare(b))
+            .map(([key, value]) => `${key}=${value}`)
+            .join('\n');
 
-        // Extract and display user data if available
-        if (initDataUnsafe.user) {
-            const user = initDataUnsafe.user;  // Assign user object
-            console.log("User data:", user);
+        Telegram.WebApp.showAlert(sortedParams);
 
-            const firstName = user.first_name || "First name not available";
-            const lastName = user.last_name || "Last name not available";
 
-            // Display user info or other relevant data
-            const devId = document.getElementById("balance");
-            if (devId) {
-                devId.textContent = `${firstName} ${lastName}`;
+        // Log the initDataUnsafe object and extract user data
+        if (Telegram.WebApp.initDataUnsafe) {
+
+            // Check if the user exists in initDataUnsafe
+            if (Telegram.WebApp.initDataUnsafe.user) {
+                user = Telegram.WebApp.initDataUnsafe.user; // Assign user object
+                console.log(updateId, user);
+
+                // Extract first name and last name from initDataUnsafe
+                const firstName = user.first_name || "First name not available";
+                const lastName = user.last_name || "Last name not available";
+
+                // Display the first and last name in the HTML element with id 'user-data'
+                const devId = document.getElementById("balance");
+                if (devId) {
+                    devId.textContent = updateId;
+                    devId.textContent = firstName;
+                    devId.textContent = user.id;
+                } else {
+                    console.error("Element with id 'balance' not found.");
+                }
             } else {
-                console.error("Element with id 'balance' not found.");
+                console.error("User data is not available in initDataUnsafe.");
             }
         } else {
-            console.error("User data is not available in initDataUnsafe.");
+            console.error("initDataUnsafe is not available within Telegram.WebApp.");
         }
-
-        // Send initData to the backend for validation
-        fetch('/validate-telegram-data', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ initData: initData }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.valid) {
-                console.log("Data validated successfully:", data);
-                // Continue with app logic if valid
-            } else {
-                console.error("Validation failed:", data.error);
-                alert("Invalid or expired Telegram data.");
-            }
-        })
-        .catch((error) => {
-            console.error("Validation error:", error);
-            alert("Error validating Telegram data.");
-        });
-
     } else {
         console.error("Telegram WebApp object is not available.");
-
-        // Clear HTML and display message to open the app via Telegram
-        document.body.innerHTML = "";
-        const message = document.createElement("div");
-        message.textContent = "Please visit us via Telegram.";
-        message.style.cssText = `
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-size: 24px;
-            color: #fff;
-            background-color: #121212;
-            text-align: center;
-        `;
-        document.body.appendChild(message);
     }
 }
-
 
 
 
@@ -4677,3 +4655,16 @@ function getSelectedTerritoryId(countryId, stateId) {
     }
     return null; // Return null if country not found
 }
+
+
+
+function getTelegramQueryString() {
+    // Get the initData from Telegram WebApp
+    const initData = Telegram.WebApp.initData;
+    Telegram.WebApp.showAlert(initData);
+
+    return params;
+}
+
+
+
