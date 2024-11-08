@@ -50,10 +50,6 @@ class WebAppAuth:
 
 def validate_telegram_load(init_data):
 
-    print ("data received in validation function: ")
-    pprint (init_data)
-
-    
     # Ensure auth_date is within 5 seconds of the current time
     current_time_ms = int(time.time() * 1000)
     
@@ -64,13 +60,10 @@ def validate_telegram_load(init_data):
         # Handle case where auth_date is not a valid integer
         return "Invalid auth_date provided."
     
-    # print(f"Current time on server (ms): {current_time_ms}\nTime from user PC (ms): {auth_date}")
-    
-    # print ("init data")
-    # pprint (init_data)
+    print(f"Current time on server (ms): {current_time_ms}\nTime from user PC (ms): {auth_date}")
 
-    # if abs(current_time_ms - auth_date) > 10000:  # 5000 milliseconds = 5 seconds
-    #     return "Please make sure you are on a high-speed internet connection"
+    if abs(current_time_ms - auth_date) > 15000:  # 5000 milliseconds = 5 seconds
+        return "Please make sure you are on a high-speed internet connection"
 
     # Prepare init_data by encoding each key-value pair appropriately
     encoded_data = {}
@@ -80,8 +73,6 @@ def validate_telegram_load(init_data):
             encoded_data[key] = json.dumps(value, separators=(",", ":"))
         else:
             encoded_data[key] = str(value)
-
-
 
     # Create a URL-encoded query string without additional spaces
     init_data_str = urllib.parse.urlencode(encoded_data, doseq=True)
