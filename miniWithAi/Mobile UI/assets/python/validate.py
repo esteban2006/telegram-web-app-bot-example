@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from operator import itemgetter
 from typing import Any
 from urllib.parse import parse_qsl
+from pprint import pprint 
 
 
 @dataclass(eq=False)
@@ -23,6 +24,7 @@ class WebAppAuth:
         self._secret_key = self._get_secret_key()
 
     def get_user_id(self, init_data: str) -> int:
+        # print (int(json.loads(self._validate(init_data)["user"])["id"]))
         return int(json.loads(self._validate(init_data)["user"])["id"])
 
     def _get_secret_key(self) -> bytes:
@@ -33,6 +35,7 @@ class WebAppAuth:
     def _validate(self, init_data: str) -> dict[str, Any]:
         try:
             parsed_data = dict(parse_qsl(init_data, strict_parsing=True))
+            pprint (parsed_data)
         except ValueError as err:
             raise AuthError(detail="invalid init data") from err
         if "hash" not in parsed_data:
@@ -41,6 +44,7 @@ class WebAppAuth:
         data_check_string = "\n".join(
             f"{k}={v}" for k, v in sorted(parsed_data.items(), key=itemgetter(0))
         )
+
         calculated_hash = hmac.new(
             key=self._secret_key,
             msg=data_check_string.encode(),
@@ -49,9 +53,11 @@ class WebAppAuth:
         if calculated_hash != hash_:
             raise AuthError(detail="invalid hash")
 
-        else:
-            print(f"calculated {calculated_hash}\nhash {hash_}")
+        # else:
+        #     print(f"calculated {calculated_hash}\nhash {hash_}")
         return parsed_data
+
+
 
 
 v = WebAppAuth("7738287101:AAE-mgrdPlfyoYXntQxqgFdE3mC3NLAwOTs")
@@ -65,6 +71,6 @@ init_data = (
     "hash=aeb71c1b5b197410726796430f5df2fbc295954dd132f965f8135aa2a8357622"
 )
 
-print(v.get_user_id(init_data))
-print(v._secret_key)
-print(v._validate(init_data))
+# print(v.get_user_id(init_data))
+# print(v._secret_key)
+v._validate(init_data)

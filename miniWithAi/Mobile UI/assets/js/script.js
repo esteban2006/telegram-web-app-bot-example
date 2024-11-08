@@ -3922,14 +3922,10 @@ function setupClickListeners() {
     });
 }
 
-// Set up listeners when the document is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    setupClickListeners();
-});
 
-let updateId = `update id 45`;
+
+let updateId = `update id 46`;
 let user;  // Declare the user variable
-
 
 
 // Function to log and display initData and initDataUnsafe data
@@ -3939,8 +3935,9 @@ function logInitDataUnsafe() {
     // Check if the Telegram WebApp object is available
     if (Telegram.WebApp) {
         console.log("Telegram WebApp object is available:", Telegram.WebApp);
+        displayLanguageContent();
 
-         // Step 1: Retrieve initData
+        // Step 1: Retrieve initData
         const initData = Telegram.WebApp.initData;
 
         // Step 2: Parse into an object and remove the 'hash' key
@@ -3951,16 +3948,25 @@ function logInitDataUnsafe() {
             .map(([key, value]) => `${key}=${value}`)
             .join('\n');
 
-        Telegram.WebApp.showAlert(sortedParams);
-
+        console.log("Sorted params: ", sortedParams);
 
         // Log the initDataUnsafe object and extract user data
         if (Telegram.WebApp.initDataUnsafe) {
-
             // Check if the user exists in initDataUnsafe
             if (Telegram.WebApp.initDataUnsafe.user) {
-                user = Telegram.WebApp.initDataUnsafe.user; // Assign user object
+                data = Telegram.WebApp.initDataUnsafe
+                user = data.user; // Assign user object
+                data.update = "validate";
                 console.log(updateId, user);
+                console.log("data to validate telegram", data)
+
+
+                // Call the function and wait for it to complete if needed
+                executeRequest(data).then(responseData => {
+                    // You can proceed with responseData here
+                    console.log("Request completed, response data:", responseData);
+                });
+
 
                 // Extract first name and last name from initDataUnsafe
                 const firstName = user.first_name || "First name not available";
@@ -3977,12 +3983,59 @@ function logInitDataUnsafe() {
                 }
             } else {
                 console.error("User data is not available in initDataUnsafe.");
+                // document.body.innerHTML = ""; // Make the body of the website empty
             }
         } else {
             console.error("initDataUnsafe is not available within Telegram.WebApp.");
         }
     } else {
         console.error("Telegram WebApp object is not available.");
+        displayLanguageContent();
+    }
+}
+
+
+async function executeRequest(data) {
+    const url = "https://670a74b300b03e3e7001.appwrite.global/v1/functions/670a74b100353c94b684/executions";
+    const headers = {
+        "Content-Type": "application/json"
+    };
+
+    // const data = {
+    //     update: "validate",
+    //     init_data: {
+    //         query_id: "AAFPEON0AAAAAE8Q43RNXS94",
+    //         user: {
+    //             id: 1961037903,
+    //             first_name: "Esteban",
+    //             last_name: "Jandres",
+    //             username: "eggsteban_503",
+    //             language_code: "en",
+    //             allows_write_to_pm: true
+    //         },
+    //         auth_date: "1730613767",
+    //         hash: "aeb71c1b5b197410726796430f5df2fbc295954dd132f965f8135aa2a8357622"
+    //     }
+    // };
+
+    try {
+        // Send the POST request and wait for the response
+        const response = await fetch(url, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(data)
+        });
+
+        // Parse and log the response JSON
+        if (response.ok) {
+            const responseData = await response.json();
+            console.log(responseData);
+            return responseData;  // Return or use the response data as needed
+        } else {
+            console.error("Server Error:", response.status, response.statusText);
+        }
+    } catch (error) {
+        console.error("Network Error:", error);
     }
 }
 
@@ -3990,8 +4043,10 @@ function logInitDataUnsafe() {
 
 let languageCode;
 function displayLanguageContent() {
-    // Default language to 'en' if user.language_code is not available
-    languageCode = user?.language_code || "es";
+    // Default language to 'en' if user.language_code is not available or unsupported
+    let languageCode = (user?.language_code === 'es' || user?.language_code === 'en') 
+                        ? user.language_code 
+                        : 'en';
 
     // Get all elements with data-lang attribute
     const languageElements = document.querySelectorAll('[data-lang]');
@@ -4007,11 +4062,13 @@ function displayLanguageContent() {
     });
 }
 
+
 // After initializing the user object with initDataUnsafe
 document.addEventListener("DOMContentLoaded", function() {
     console.log("DOM fully loaded and parsed.");
-    logInitDataUnsafe();  // This will assign the user object
     displayLanguageContent();  // Display content based on language
+    logInitDataUnsafe();  // This will assign the user object
+    setupClickListeners();
 });
 
 

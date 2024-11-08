@@ -37,7 +37,7 @@ def main(context):
 
             if data["update"] == "validate":
                 try:
-                    validation = validate_telegram_load(data["init_data"])
+                    validation = validate_telegram_load(data)
                     return create_response({"is_valid": validation})
                 except Exception as e:
                     context.error(f"Error fetching key: {e}")
